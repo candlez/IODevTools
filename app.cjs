@@ -8,7 +8,7 @@ const mysql = require("mysql2");
 app.use(express.static("./public"));
 
 app.get("/", (request, response) => {
-    response.sendFile(path.resolve(__dirname, "./public/index.html"));
+    response.sendFile(path.resolve(__dirname, "./index.html"));
 });
 
 const server = app.listen(8080, () => {

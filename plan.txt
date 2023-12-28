@@ -1,0 +1,9 @@
+two node.js scripts running on the same machine as a database
+
+both accessing it locally (that way we don't have to screw around with remote db connection)
+
+if we ever need to move the database to a different computer, we will figure it out!
+
+csv files are made by the client, sent to the IO server, and put in the database
+
+when the IODevTools are accessed, csv files will queried as neccessary
