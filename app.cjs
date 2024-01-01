@@ -4,6 +4,18 @@ const app = express();
 const socket = require("socket.io");
 const mysql = require("mysql2");
 
+const db = mysql.createConnection({
+    host: "localhost",
+    port: 3306,
+    user: "root",
+    password: "Candleeater03",
+    database: "perflogs"
+});
+
+db.connect((err) => {
+    if (err) throw err;
+    console.log("connected to database");
+});
 
 app.use(express.static("./public"));
 
@@ -18,19 +30,20 @@ const server = app.listen(8080, () => {
 const io = socket(server);
 
 io.sockets.on("connection", (socket) => {
+    console.log(socket.id);
+
     socket.on("sentEntry", (data) => {
-
+        //
     });
-});
 
-const db = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: "Candleeater03",
-});
-
-db.connect((err) => {
-    if (err) throw err;
-    console.log("connected to database");
+    socket.on("requestLogList", () => {
+        db.query(
+            "SELECT DISTINCT timestamp FROM logs;",
+            (err, results) => {
+                if (err) throw err;
+                console.log("Log List Requested")
+                io.to(socket.id).emit("logListSent", results);
+            }
+        )
+    });
 });
